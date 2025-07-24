@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSF Google Workspace Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Academia -->
+    <!-- Application Structure Plan: The application is structured as a single-page interactive guide with a fixed top navigation bar that allows users to jump to specific sections. This replaces a linear document format with a task-oriented approach. A student needing help with "Meet" can instantly navigate there. The core content is organized into cards, interactive checklists, and accordions. This structure was chosen to reduce cognitive load, make information easily scannable, and engage the user through interaction, which is more effective for a student audience than a static text document. The flow guides the user from the most critical starting point (Login) through each application and concludes with core principles (Digital Citizenship) and support. -->
+    <!-- Visualization & Content Choices: Since the source report contains procedural and qualitative information rather than quantitative data, traditional charts are not used. Instead, information is "visualized" through structured, interactive components. For example: Login Steps (Goal: Inform/Guide) are presented as a clear, numbered visual process flow. Gmail/YouTube best practices (Goal: Compare/Instruct) are transformed into interactive checklists, allowing students to self-assess and engage with the content. Key principles of Digital Citizenship (Goal: Organize/Inform) are displayed in a card-based layout for quick scanning. Complex topics like Privacy are nested within accordions (Goal: Organize/Inform) to prevent information overload while keeping details accessible. This approach uses HTML/CSS/JS to create an engaging, infographic-like experience without using SVG or Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            color: #1F2937;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #3B82F6;
+            border-bottom-color: #3B82F6;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .checklist-item {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .checklist-item.checked {
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-button.open .accordion-arrow {
+            transform: rotate(90deg);
+        }
+        .accordion-arrow {
+            transition: transform 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="min-h-screen">
+        
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <span class="text-2xl font-bold text-blue-600">VSF</span>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700" data-target="welcome">Welcome</a>
+                                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700" data-target="apps">App Guides</a>
+                                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700" data-target="citizenship">Digital Citizenship</a>
+                                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700" data-target="help">Get Help</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:hidden border-t border-gray-200">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex justify-around">
+                    <a href="#" class="nav-link text-center block px-3 py-2 rounded-md text-base font-medium text-gray-700" data-target="welcome">Welcome</a>
+                    <a href="#" class="nav-link text-center block px-3 py-2 rounded-md text-base font-medium text-gray-700" data-target="apps">Apps</a>
+                    <a href="#" class="nav-link text-center block px-3 py-2 rounded-md text-base font-medium text-gray-700" data-target="citizenship">Citizenship</a>
+                    <a href="#" class="nav-link text-center block px-3 py-2 rounded-md text-base font-medium text-gray-700" data-target="help">Help</a>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div id="welcome" class="content-section active">
+                <div class="bg-white">
+                    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+                        <div class="text-center">
+                            <h2 class="text-base font-semibold text-blue-600 tracking-wide uppercase">Victoria School Foundation</h2>
+                            <p class="mt-1 text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">Your Digital Classroom Guide</p>
+                            <p class="max-w-xl mt-5 mx-auto text-xl text-gray-500">An essential guide for Junior High students on using Google Workspace for learning. Master the tools, stay safe online, and embrace innovative thinking.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <h3 class="text-2xl font-bold text-center mb-8">First Things First: Your VSF Account</h3>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h4 class="text-xl font-semibold mb-4">Logging In & Staying Secure</h4>
+                        <p class="text-gray-600 mb-6">Your key to the digital classroom is your official school account: `yourname@vsf.edu.ph`. Always use this account to access school resources. This section walks you through logging in for the first time and keeping your account safe. For any password issues, remember to see your computer teacher.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h5 class="font-bold mb-3 text-lg">Step-by-Step Login</h5>
+                                <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                                    <li>Open your browser and go to <code class="bg-gray-100 text-blue-600 p-1 rounded">classroom.google.com</code>.</li>
+                                    <li>Enter your full school email: `yourname@vsf.edu.ph`.</li>
+                                    <li>Enter your password.</li>
+                                    <li>If asked, choose "I'm A Student".</li>
+                                    <li>If you see 2-Step Verification, follow the on-screen instructions.</li>
+                                    <li>To switch from a personal account, click your profile icon in the top-right and select your VSF account.</li>
+                                </ol>
+                            </div>
+                            <div>
+                                <h5 class="font-bold mb-3 text-lg">Account Safety 101</h5>
+                                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                                    <li>Create a strong, unique password (letters, numbers, symbols).</li>
+                                    <li><span class="font-bold">Never</span> share your password with anyone.</li>
+                                    <li>Be cautious of "phishing" emails asking for your login details.</li>
+                                    <li>If you forget your password, <span class="font-bold text-red-600">do not reset it yourself</span>. Ask your computer teacher for help.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="apps" class="content-section">
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-extrabold text-gray-900">Google App Guides</h2>
+                        <p class="mt-4 text-lg text-gray-500">Click on an app below to learn how to use it for your classes.</p>
+                    </div>
+
+                    <div class="space-y-10">
+                        <!-- Google Classroom -->
+                        <div class="bg-white p-8 rounded-lg shadow-lg accordion-container">
+                            <button class="w-full flex justify-between items-center text-left text-2xl font-semibold accordion-button">
+                                <span><span class="text-4xl mr-4">📚</span>Google Classroom: Your Learning Hub</span>
+                                <span class="accordion-arrow text-3xl text-blue-500 transform transition-transform duration-300">&#10148;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="mt-4 text-gray-600">Classroom is your central hub for assignments, announcements, and materials. It organizes all your schoolwork in one place.</p>
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold mb-2">Key Actions</h4>
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li><span class="font-semibold">Join a Class:</span> Use the class code from your teacher.</li>
+                                            <li><span class="font-semibold">Turn in Assignments:</span> Find and submit work on the 'Classwork' page.</li>
+                                            <li><span class="font-semibold">Check Grades:</span> View grades and feedback from your teacher.</li>
+                                            <li><span class="font-semibold">Use Originality Reports:</span> Check your work for proper citation before submitting.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-2">Navigating the Pages</h4>
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li><span class="font-semibold">Home:</span> See all your classes.</li>
+                                            <li><span class="font-semibold">Stream:</span> Class announcements and updates.</li>
+                                            <li><span class="font-semibold">Classwork:</span> All your assignments and materials.</li>
+                                            <li><span class="font-semibold">People:</span> See your teachers and classmates.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gmail -->
+                        <div class="bg-white p-8 rounded-lg shadow-lg accordion-container">
+                            <button class="w-full flex justify-between items-center text-left text-2xl font-semibold accordion-button">
+                                <span><span class="text-4xl mr-4">✉️</span>Gmail: Your School Email</span>
+                                <span class="accordion-arrow text-3xl text-blue-500 transform transition-transform duration-300">&#10148;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="mt-4 text-gray-600">Your VSF Gmail is for all official school communication. It's ad-free and more private than a personal account. Check it regularly for important updates.</p>
+                                <div class="mt-6">
+                                    <h4 class="font-bold mb-4 text-lg text-center">School Email: Do's and Don'ts Checklist</h4>
+                                    <p class="text-gray-500 text-center mb-6 text-sm">Click each item to mark it as read.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                                        <div class="bg-green-50 p-4 rounded-lg">
+                                            <h5 class="text-green-700 font-bold text-center mb-3">Do These 👍</h5>
+                                            <ul class="space-y-2 dos-checklist">
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-green-600">✓</span>Use your `vsf.edu.ph` email for school.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-green-600">✓</span>Use clear, respectful subject lines and greetings.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-green-600">✓</span>Use proper grammar and a polite tone.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-green-600">✓</span>Include your full name and class in your signature.</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-red-50 p-4 rounded-lg">
+                                            <h5 class="text-red-700 font-bold text-center mb-3">Avoid These 👎</h5>
+                                            <ul class="space-y-2 donts-checklist">
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-red-600">✗</span>Use a personal `@gmail.com` account for school.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-red-600">✗</span>Use slang, emojis, or ALL CAPS.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-red-600">✗</span>Send rude, angry, or inappropriate messages.</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2 text-red-600">✗</span>Share your password or forward spam.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Google Chat -->
+                        <div class="bg-white p-8 rounded-lg shadow-lg accordion-container">
+                            <button class="w-full flex justify-between items-center text-left text-2xl font-semibold accordion-button">
+                                <span><span class="text-4xl mr-4">💬</span>Google Chat: Instant Connections</span>
+                                <span class="accordion-arrow text-3xl text-blue-500 transform transition-transform duration-300">&#10148;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="mt-4 text-gray-600">Use Chat for quick questions and group projects. It's great for collaborating on Docs, Sheets, and Slides in real-time.</p>
+                                <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                                    <h4 class="font-bold text-yellow-800">Chat Etiquette & Safety</h4>
+                                    <ul class="list-disc list-inside space-y-2 mt-2 text-yellow-700">
+                                        <li>Think before you type; be clear and respectful.</li>
+                                        <li>Keep conversations professional and on-topic.</li>
+                                        <li>Never share personal information like your address or phone number.</li>
+                                        <li>Report any form of cyberbullying to a teacher immediately.</li>
+                                        <li>Remember the school can set restrictions for safety.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Google Meet -->
+                        <div class="bg-white p-8 rounded-lg shadow-lg accordion-container">
+                            <button class="w-full flex justify-between items-center text-left text-2xl font-semibold accordion-button">
+                                <span><span class="text-4xl mr-4">📹</span>Google Meet: Virtual Classes</span>
+                                <span class="accordion-arrow text-3xl text-blue-500 transform transition-transform duration-300">&#10148;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="mt-4 text-gray-600">Meet is for your online classes and discussions. You can join from Classroom, a link, or a nickname. Remember, only users with a school account can join VSF meetings, ensuring a secure environment.</p>
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold mb-2">How to Participate</h4>
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>Toggle your camera and microphone on/off.</li>
+                                            <li>Use the "Hand Raise" feature to ask to speak.</li>
+                                            <li>Submit questions in the Q&A panel.</li>
+                                            <li>Respond to polls from your teacher.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold mb-2">Tips for a Smooth Experience</h4>
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>Find a quiet, well-lit space.</li>
+                                            <li>Use headphones for better audio.</li>
+                                            <li>Mute your mic when you are not talking.</li>
+                                            <li>Use live captions if you need them.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- YouTube -->
+                        <div class="bg-white p-8 rounded-lg shadow-lg accordion-container">
+                            <button class="w-full flex justify-between items-center text-left text-2xl font-semibold accordion-button">
+                                <span><span class="text-4xl mr-4">📺</span>YouTube: Smart Exploration</span>
+                                <span class="accordion-arrow text-3xl text-blue-500 transform transition-transform duration-300">&#10148;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="mt-4 text-gray-600">YouTube can be a great learning tool, but it's essential to use it wisely. This checklist helps you stay focused and evaluate information critically.</p>
+                                <div class="mt-6">
+                                    <h4 class="font-bold mb-4 text-lg text-center">Smart YouTube Use Checklist</h4>
+                                    <p class="text-gray-500 text-center mb-6 text-sm">Click each item to mark it as complete.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 youtube-checklist">
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-bold text-center mb-3">Before Watching</h5>
+                                            <ul class="space-y-2">
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Is the source reputable (e.g., a university, museum, educational channel)?</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Have I set a clear learning goal?</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-bold text-center mb-3">While Watching</h5>
+                                            <ul class="space-y-2">
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Am I ignoring distracting "related videos" and comments?</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Am I taking notes on key points?</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <h5 class="font-bold text-center mb-3">After Watching</h5>
+                                            <ul class="space-y-2">
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Can I verify the key facts with another trusted source?</li>
+                                                <li class="checklist-item flex items-start"><span class="mr-2">□</span>Can I summarize what I learned?</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="citizenship" class="content-section">
+                <div class="bg-white">
+                    <div class="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8 text-center">
+                        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                            <span class="block">Being a Responsible Digital Citizen</span>
+                        </h2>
+                        <p class="mt-4 text-lg leading-6 text-gray-500">Digital citizenship is about being safe, respectful, and responsible online. It's about treating others well and protecting yourself in the digital world. Your VSF account is a private, ad-free space to help you practice these skills.</p>
+                    </div>
+                </div>
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-bold mb-3">1. Empathy & Respect (Netiquette)</h3>
+                            <p class="text-gray-600">Remember there's a real person behind every screen. Treat others online as you would in person. Be clear and compassionate in your messages, and never engage in or tolerate cyberbullying.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-bold mb-3">2. Privacy & Security</h3>
+                            <p class="text-gray-600">Protect your personal information. Use strong passwords and be wary of phishing scams. Understand that the school administrator can access your account activity to ensure safety and compliance.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-bold mb-3">3. Digital Literacy & Smart Use</h3>
+                            <p class="text-gray-600">Think critically about the information you find online. Check sources and be skeptical of claims that seem too good to be true. Everything you post creates a "digital footprint" that can be permanent.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-bold mb-3">4. Healthy Balance</h3>
+                            <p class="text-gray-600">Technology is a tool. It's important to balance your time online with offline activities, real-world interactions, and physical exercise.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="help" class="content-section">
+                <div class="bg-blue-600">
+                    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+                        <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                            <span class="block">Need Help?</span>
+                            <span class="block text-blue-200">Know who to ask.</span>
+                        </h2>
+                    </div>
+                </div>
+                 <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                            <div class="text-5xl mb-4">👩‍🏫</div>
+                            <h3 class="text-2xl font-bold text-gray-900">For Technical Issues</h3>
+                            <p class="mt-2 text-gray-600">If you forget your password, can't log in, or have a problem with a Google App...</p>
+                            <p class="mt-4 text-xl font-semibold text-blue-600">Ask your Computer Teacher.</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                             <div class="text-5xl mb-4">📖</div>
+                            <h3 class="text-2xl font-bold text-gray-900">For Class Questions</h3>
+                            <p class="mt-2 text-gray-600">If you have a question about an assignment, a grade, or class material...</p>
+                            <p class="mt-4 text-xl font-semibold text-blue-600">Ask your Subject Teacher.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+                <div class="flex justify-center space-x-6 md:order-2">
+                    <a href="https://vsf.edu.ph" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-500">
+                        vsf.edu.ph
+                    </a>
+                </div>
+                <div class="mt-4 md:mt-0 md:order-1">
+                    <p class="text-center text-base text-gray-400">&copy; Victoria School Foundation. Tradition of Excellence, Innovative Thinking.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function setActiveTab(targetId) {
+                navLinks.forEach(link => {
+                    if (link.dataset.target === targetId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                window.scrollTo(0, 0);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.dataset.target;
+                    setActiveTab(targetId);
+                });
+            });
+
+            setActiveTab('welcome');
+
+            const checklistItems = document.querySelectorAll('.checklist-item');
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                    const icon = this.querySelector('span');
+                    if (icon && icon.innerText === '□') {
+                        icon.innerText = '☑';
+                    } else if (icon && icon.innerText === '☑') {
+                        icon.innerText = '□';
+                    }
+                });
+            });
+
+            const accordionContainers = document.querySelectorAll('.accordion-container');
+            accordionContainers.forEach(container => {
+                const button = container.querySelector('.accordion-button');
+                const content = container.querySelector('.accordion-content');
+
+                button.addEventListener('click', () => {
+                    button.classList.toggle('open');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
